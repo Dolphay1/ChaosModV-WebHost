@@ -218,17 +218,20 @@
                         </Grid.RowDefinitions>
 
                         <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="138*"/>
+                                <ColumnDefinition Width="389*"/>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="80" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
                             <Label Content="This feature allows Twitch chat to vote for an effect from a collection of random ones each time the timer runs out by making use of Twitch's chat feature.&#xA;There are specific options you can / must configure below.&#xA;Consult the twitch__readme.txt file included with the mod (inside the README folder) for more information."
-                                   Grid.Row="0"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="117,0,0,0" />
                             <CheckBox x:Name="twitch_user_agreed" Content="Enable Twitch Voting" Grid.Row="1"
-                                      HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Click="twitch_user_agreed_Clicked" />
+                                      HorizontalAlignment="Left" VerticalAlignment="Center"
+                                      Click="twitch_user_agreed_Clicked" Grid.Column="1" Margin="186,0,0,0" />
                         </Grid>
 
                         <Grid Grid.Row="1">
@@ -313,6 +316,63 @@
                                 <CheckBox x:Name="twitch_user_chance_system_retain_chance_enable" Width="60" Height="20" Grid.Column="2"
                                           HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" />
                             </Grid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem x:Name="vote_tab" Header="Manual Voting" Background="#FFF0F0F0" BorderBrush="LightGray">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="120" />
+                            <RowDefinition Height="100" />
+                            <RowDefinition Height="80" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Grid Margin="0,-5,0,5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="69" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Label Content="This feature allows you to run a custom server to vote for over the internet"
+                                HorizontalAlignment="Center" VerticalAlignment="Center" Height="24" Width="404" />
+                            <CheckBox x:Name="online_enabled" Click="OnlineEnableClick" Content="Enable Online Voting" Grid.Row="1"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Height="16" Width="130" />
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="340" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="400" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Label x:Name="hosted_online_label" Content="Use a separate host" Grid.Row="0" Grid.Column="0"
+                                HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <CheckBox x:Name="hosted_online" Click="HostedOnline" Width="60" Height="20" Grid.Row="0" Grid.Column="2"
+                                HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <Label x:Name="random_online_label" Content="Enable &quot;Random Effect&quot; voteable option" Grid.Row="1" Grid.Column="0"
+                                HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <CheckBox x:Name="random_online" Width="60" Height="20" Grid.Row="1" Grid.Column="2"
+                                HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <Label x:Name="host_online_label" Content="Host" Grid.Row="0" Grid.Column="2"
+                                HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <TextBox x:Name="host_online" Width="120" Height="25" Grid.Row="0" Grid.Column="4"
+                                HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <Label x:Name="port_online_label" Content="Port" Grid.Row="1" Grid.Column="2"
+                                HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <TextBox x:Name="port_online" Width="120" Height="25" Grid.Row="1" Grid.Column="4"
+                                HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" />
                         </Grid>
                     </Grid>
                 </TabItem>

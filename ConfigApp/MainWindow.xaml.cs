@@ -16,9 +16,10 @@ namespace ConfigApp
     public partial class MainWindow : Window
     {
         private bool m_initializedTitle = false;
-        
+
         private OptionsFile m_configFile = new OptionsFile("config.ini");
         private OptionsFile m_twitchFile = new OptionsFile("twitch.ini");
+        private OptionsFile m_onlineFile = new OptionsFile("online.ini");
         private OptionsFile m_effectsFile = new OptionsFile("effects.ini");
 
         private Dictionary<EffectType, TreeMenuItem> m_treeMenuItemsMap;
@@ -44,19 +45,21 @@ namespace ConfigApp
             {
                 m_initializedTitle = true;
 
-                Title += " (v" + Info.VERSION + ")";
+                Title += " (v" + Info.VERSION + " Online Voting Fork)";
             }
 
             CheckForUpdates();
 
             ParseConfigFile();
             ParseTwitchFile();
+            ParseOnlineFile();
 
             InitEffectsTreeView();
 
             ParseEffectsFile();
 
             InitTwitchTab();
+            InitOnlineTab();
 
             // Check write permissions
             try
@@ -65,7 +68,7 @@ namespace ConfigApp
                 {
                     using (File.Create(".writetest"))
                     {
-                    
+
                     }
 
                     File.Delete(".writetest");
@@ -181,7 +184,7 @@ namespace ConfigApp
             m_configFile.WriteValue("NewMetaEffectSpawnTime", meta_effects_spawn_dur.Text);
             m_configFile.WriteValue("MetaEffectDur", meta_effects_timed_dur.Text);
             m_configFile.WriteValue("MetaShortEffectDur", meta_effects_short_timed_dur.Text);
-            
+
             m_configFile.WriteFile();
         }
 
@@ -213,6 +216,31 @@ namespace ConfigApp
             m_twitchFile.WriteValue("TwitchRandomEffectVoteableEnable", twitch_user_random_voteable_enable.IsChecked.Value);
 
             m_twitchFile.WriteFile();
+        }
+        
+        private void OnlineEnableClick(object sender, RoutedEventArgs e)
+        {
+            OnlineEnabled();
+        }
+
+        private void ParseOnlineFile()
+        {
+            online_enabled.IsChecked = m_onlineFile.ReadValueBool("OnlineEnabled", false);
+            hosted_online.IsChecked = m_onlineFile.ReadValueBool("HostedOnline", false);
+            host_online.Text = m_onlineFile.ReadValue("HostOnline");
+            random_online.IsChecked = m_onlineFile.ReadValueBool("RandomEffectVotableOnline", false);
+            port_online.Text = m_onlineFile.ReadValue("PortOnline");
+        }
+
+        private void WriteOnlineFile()
+        {
+            m_onlineFile.WriteValue("OnlineEnabled", online_enabled.IsChecked.Value);
+            m_onlineFile.WriteValue("HostedOnline", hosted_online.IsChecked.Value);
+            m_onlineFile.WriteValue("HostOnline", host_online.Text);
+            m_onlineFile.WriteValue("RandomEffectVotableOnline", random_online.IsChecked.Value);
+            m_onlineFile.WriteValue("PortOnline", port_online.Text);
+
+            m_onlineFile.WriteFile();
         }
 
         private void ParseEffectsFile()
@@ -374,9 +402,33 @@ namespace ConfigApp
             
         }
 
+
+
         void InitTwitchTab()
         {
             TwitchTabHandleAgreed();
+        }
+
+        void InitOnlineTab()
+        {
+            OnlineEnabled();
+        }
+
+        void HostedOnline(object sender, RoutedEventArgs e)
+        {
+            host_online.IsEnabled = hosted_online.IsChecked.Value;
+        }
+
+        void OnlineEnabled()
+        {
+            bool enabled = online_enabled.IsChecked.Value;
+
+            hosted_online.IsEnabled = enabled;
+            host_online.IsEnabled = enabled && hosted_online.IsChecked.Value;
+            random_online.IsEnabled = enabled;
+            port_online.IsEnabled = enabled;
+
+            twitch_user_agreed.IsEnabled = !enabled;
         }
 
         void TwitchTabHandleAgreed()
@@ -399,6 +451,8 @@ namespace ConfigApp
             twitch_user_chance_system_retain_chance_enable.IsEnabled = agreed;
             twitch_user_random_voteable_enable.IsEnabled = agreed;
             twitch_user_random_voteable_enable_label.IsEnabled = agreed;
+
+            online_enabled.IsEnabled = !agreed;
         }
 
         private void OnlyNumbersPreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -421,10 +475,12 @@ namespace ConfigApp
             WriteConfigFile();
             WriteTwitchFile();
             WriteEffectsFile();
+            WriteOnlineFile();
 
             // Reload saved config to show the "new" (saved) settings
             ParseConfigFile();
             ParseTwitchFile();
+            ParseOnlineFile();
 
             MessageBox.Show("Saved config!\nMake sure to press CTRL + L in-game twice if mod is already running to reload the config.", "ChaosModV", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -450,6 +506,18 @@ namespace ConfigApp
 
                     // Ensure all options are disabled in twitch tab again
                     TwitchTabHandleAgreed();
+                }
+
+                result = MessageBox.Show("Do you want to reset your online voting settings too?", "ChaosModV",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    m_onlineFile.ResetFile();
+                    ParseOnlineFile();
+
+                    // Ensure all options are disabled in twitch tab again
+                    OnlineEnabled();
                 }
 
                 Init();
