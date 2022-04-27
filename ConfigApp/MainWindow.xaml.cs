@@ -227,9 +227,12 @@ namespace ConfigApp
         {
             online_enabled.IsChecked = m_onlineFile.ReadValueBool("OnlineEnabled", false);
             hosted_online.IsChecked = m_onlineFile.ReadValueBool("HostedOnline", false);
-            host_online.Text = m_onlineFile.ReadValue("HostOnline");
+            host_online.Text = m_onlineFile.ReadValue("HostOnline", "127.0.0.1");
             random_online.IsChecked = m_onlineFile.ReadValueBool("RandomEffectVotableOnline", false);
-            port_online.Text = m_onlineFile.ReadValue("PortOnline");
+            port_online.Text = m_onlineFile.ReadValue("PortOnline", "3003");
+            directory_online.Text = m_onlineFile.ReadValue("DirectoryOnline", "/");
+            query_online.Text = m_onlineFile.ReadValue("QueryOnline", "request");
+
         }
 
         private void WriteOnlineFile()
@@ -239,6 +242,8 @@ namespace ConfigApp
             m_onlineFile.WriteValue("HostOnline", host_online.Text);
             m_onlineFile.WriteValue("RandomEffectVotableOnline", random_online.IsChecked.Value);
             m_onlineFile.WriteValue("PortOnline", port_online.Text);
+            m_onlineFile.WriteValue("DirectoryOnline", directory_online.Text);
+            m_onlineFile.WriteValue("QueryOnline", query_online.Text);
 
             m_onlineFile.WriteFile();
         }
@@ -416,7 +421,14 @@ namespace ConfigApp
 
         void HostedOnline(object sender, RoutedEventArgs e)
         {
-            host_online.IsEnabled = hosted_online.IsChecked.Value;
+            updateHostedOnline(hosted_online.IsChecked.Value);
+        }
+
+        void updateHostedOnline(bool enabled)
+        {
+            host_online.IsEnabled = enabled;
+            directory_online.IsEnabled = enabled;
+            query_online.IsEnabled = enabled;
         }
 
         void OnlineEnabled()
@@ -424,9 +436,9 @@ namespace ConfigApp
             bool enabled = online_enabled.IsChecked.Value;
 
             hosted_online.IsEnabled = enabled;
-            host_online.IsEnabled = enabled && hosted_online.IsChecked.Value;
             random_online.IsEnabled = enabled;
             port_online.IsEnabled = enabled;
+            updateHostedOnline(enabled && hosted_online.IsChecked.Value);
 
             twitch_user_agreed.IsEnabled = !enabled;
         }
@@ -468,6 +480,10 @@ namespace ConfigApp
         private void NoCopyPastePreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             Utils.HandleNoCopyPastePreviewExecuted(e);
+        }
+        private void OnlyDomainPastes(object sender, DataObjectPastingEventArgs e)
+        {
+            Utils.HandleOnlyDomainPaste(e);
         }
 
         private void user_save_Click(object sender, RoutedEventArgs e)
@@ -588,6 +604,11 @@ namespace ConfigApp
         private void contribute_discord_click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://discord.gg/w2tDeKVaF9");
+        }
+
+        private void host_online_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

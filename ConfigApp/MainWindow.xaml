@@ -324,9 +324,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="120" />
-                            <RowDefinition Height="100" />
-                            <RowDefinition Height="80" />
-                            <RowDefinition Height="30" />
+                            <RowDefinition Height="250" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
@@ -354,25 +352,50 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50" />
                                 <RowDefinition Height="50" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
-                            <Label x:Name="hosted_online_label" Content="Use a separate host" Grid.Row="0" Grid.Column="0"
+
+                            <Label x:Name="random_online_label" Content="Enable &quot;Random Effect&quot; voteable option" Grid.Row="0" Grid.Column="0"
                                 HorizontalAlignment="Right" VerticalAlignment="Center" />
-                            <CheckBox x:Name="hosted_online" Click="HostedOnline" Width="60" Height="20" Grid.Row="0" Grid.Column="2"
+                            <CheckBox x:Name="random_online" Width="60" Height="20" Grid.Row="0" Grid.Column="2"
                                 HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            <Label x:Name="random_online_label" Content="Enable &quot;Random Effect&quot; voteable option" Grid.Row="1" Grid.Column="0"
+                            
+                            <Label x:Name="port_online_label" Content="Port" Grid.Row="0" Grid.Column="2"
                                 HorizontalAlignment="Right" VerticalAlignment="Center" />
-                            <CheckBox x:Name="random_online" Width="60" Height="20" Grid.Row="1" Grid.Column="2"
+                            <TextBox x:Name="port_online" Width="40" Height="25" Grid.Row="0" Grid.Column="4" Text="3003" 
+                                     PreviewTextInput="OnlyNumbersPreviewTextInput" CommandManager.PreviewExecuted="NoCopyPastePreviewExecuted" ContextMenu="{x:Null}" Keyboard.PreviewKeyDown="NoSpacePreviewKeyDown" 
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                            
+                            <Label x:Name="host_online_label" Content="Host" Grid.Row="1" Grid.Column="2"
+                                HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <TextBox x:Name="host_online" Width="160" Height="25" Grid.Row="1" Grid.Column="4" Text="127.0.0.1"
+                                     Keyboard.PreviewKeyDown="NoSpacePreviewKeyDown" 
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                            
+                            <Label x:Name="hosted_online_label" Content="Use a separate host" Grid.Row="1" Grid.Column="0"
+                                HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <CheckBox x:Name="hosted_online" Click="HostedOnline" Width="60" Height="20" Grid.Row="1" Grid.Column="2"
                                 HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            <Label x:Name="host_online_label" Content="Host" Grid.Row="0" Grid.Column="2"
+                            
+                            <Label x:Name="warning_online_label" Width="350" Height="24" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" Content="WARNING: if you do not know what the settings below mean"/>
+                            <Label x:Name="warning_online_label2" Width="350" Height="24" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" Content="do not mess with them"/>
+
+                            <Label x:Name="directory_online_label" Content="Directory" Grid.Row="4" Grid.Column="0"
                                 HorizontalAlignment="Right" VerticalAlignment="Center" />
-                            <TextBox x:Name="host_online" Width="120" Height="25" Grid.Row="0" Grid.Column="4"
-                                HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            <Label x:Name="port_online_label" Content="Port" Grid.Row="1" Grid.Column="2"
+                            <TextBox x:Name="directory_online" Width="160" Height="25" Grid.Row="4" Grid.Column="2" Text="/"
+                                     Keyboard.PreviewKeyDown="NoSpacePreviewKeyDown" 
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+
+                            <Label x:Name="query_online_label" Content="Request Parameter Name" Grid.Row="4" Grid.Column="2"
                                 HorizontalAlignment="Right" VerticalAlignment="Center" />
-                            <TextBox x:Name="port_online" Width="120" Height="25" Grid.Row="1" Grid.Column="4"
-                                HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+                            <TextBox x:Name="query_online" Width="160" Height="25" Grid.Row="4" Grid.Column="4" Text="request"
+                                     Keyboard.PreviewKeyDown="NoSpacePreviewKeyDown" 
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
                         </Grid>
                     </Grid>
                 </TabItem>
