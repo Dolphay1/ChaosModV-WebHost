@@ -481,10 +481,6 @@ namespace ConfigApp
         {
             Utils.HandleNoCopyPastePreviewExecuted(e);
         }
-        private void OnlyDomainPastes(object sender, DataObjectPastingEventArgs e)
-        {
-            Utils.HandleOnlyDomainPaste(e);
-        }
 
         private void user_save_Click(object sender, RoutedEventArgs e)
         {
