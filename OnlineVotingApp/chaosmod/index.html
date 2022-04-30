@@ -1,0 +1,313 @@
+﻿<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: lightgray;
+            font-family: sans-serif;
+            letter-spacing: 1px;
+        }
+
+        body {
+            background-color: #45103E;
+        }
+
+        [class*="col-"] {
+            float: left;
+            width: 100%;
+
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-bottom: 10px;
+        }
+
+        .smallerovertime {
+            font-size: large;
+        }
+
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            height: 120px;
+        }
+
+        .votes {
+            position: absolute;
+            padding-right: 10%;
+            left: 80%;
+            top: 30%;
+        }
+
+        .centerbox {
+            margin: auto;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 25px;
+            background-color: #56144D;
+        }
+
+        #nonvoting {
+            max-width: 600px;
+            width: 90%;
+            height: 300px;
+            text-align: center;
+        }
+
+        #loading {
+            max-width: 600px;
+            width: 90%;
+            height: 300px;
+            text-align: center;
+        }
+
+        #votebox {
+            background-color: #56144D;
+            width: 90%;
+            height: 575px;
+            text-align: center;
+        }
+
+        @media only screen and (min-width: 370px) {
+            .smallerovertime {
+                font-size: x-large;
+            }
+
+            #votebox {
+                height: 600px
+            }
+        }
+
+        @media only screen and (min-width: 550px) {
+            .smallerovertime {
+                font-size: xx-large;
+            }
+            #votebox {
+                height: 625px
+            }
+        }
+
+        @media only screen and (min-width: 650px) {
+            .col-1 {
+                width: 50%;
+                padding-left: 50px;
+                padding-right: 10px;
+                padding-bottom: 20px;
+            }
+
+            .col-2 {
+                width: 50%;
+                padding-left: 10px;
+                padding-right: 50px;
+                padding-bottom: 20px;
+            }
+
+            .toggle {
+                height: 200px;
+            }
+
+            .votes {
+                top: auto;
+            }
+
+            #votebox {
+                height: 575px;
+            }
+        }
+
+        @media only screen and (min-width: 900px) {
+            .col-1 {
+                padding-left: 50px;
+                padding-right: 25px;
+                padding-bottom: 50px;
+            }
+
+            .col-2 {
+                padding-left: 25px;
+                padding-right: 50px;
+                padding-bottom: 50px;
+            }
+
+            .votes {
+                left: 85%;
+            }
+
+            #votebox {
+                height: 600px;
+            }
+        }
+
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .button {
+            background-color: rgba(0, 0, 0, 0);
+            border: 5px solid darkgoldenrod;
+            color: lightgray;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            text-align: center;
+            text-decoration: none;
+            font-size: 30px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            font-family: sans-serif;
+            border-radius: 25px;
+        }
+
+        input:checked+.button {
+            background-color: goldenrod;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+    </style>
+</head>
+
+<html>
+
+<body>
+    <div class="centerbox" id="loading">
+        <h1
+            style="margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);width: 100%;padding-left: 5px;padding-right: 5px;">
+            Loading...</h1>
+    </div>
+    <div class="centerbox" id="nonvoting" hidden>
+        <h1
+            style="margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);width: 100%;padding-left: 5px;padding-right: 5px;">
+            This round is not a voting round.</h1>
+    </div>
+    <div class="centerbox" id="votebox" hidden>
+        <div>
+            <h1 class="smallerovertime">Choose one or more options</h1>
+        </div>
+        <div class="row">
+            <div class="col-1">
+                <label class="toggle">
+                    <input id="vote1" type="checkbox">
+                    <span class="button">
+                        <p id="option1">Option1</p>
+                        <p id="votes1" class="votes">0</p>
+                    </span>
+                </label>
+            </div>
+            <div class="col-2">
+                <label class="toggle">
+                    <input id="vote2" type="checkbox">
+                    <span class="button">
+                        <p id="option2">Option2</p>
+                        <p id="votes2" class="votes">0</p>
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1">
+                <label class="toggle">
+                    <input id="vote3" type="checkbox">
+                    <span class="button">
+                        <p id="option3">Option3</p>
+                        <p id="votes3" class="votes">0</p>
+                    </span>
+                </label>
+            </div>
+            <div class="col-2">
+                <label class="toggle">
+                    <input id="vote4" type="checkbox">
+                    <span class="button">
+                        <p id="option4">Option4</p>
+                        <p id="votes4" class="votes">0</p>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./engine.io.js"></script>
+    <script>
+        var votes = [false, false, false, false, false]
+        const socket = new eio('ws://<IP>:<PORT>/');
+        socket.on('open', () => {
+            socket.on('message', data => {
+                data = data.split(":")
+                console.log(data)
+                switch (data[0]) {
+                    case "update":
+                        var jsonData = JSON.parse(data[1]);
+                        for (var i = 0; i < document.getElementsByClassName("votes").length; i++) {
+                            var vote = document.getElementsByClassName("votes")[i];
+                            vote.innerHTML = jsonData[i];
+                        }
+                        break;
+                    case "newvote":
+                        var array = JSON.parse(data[1]);
+
+                        for (var i = 0; i < array.length; i++) {
+                            console.log(i)
+                            console.log(document.getElementById("option" + (i + 1)))
+                            document.getElementById("option" + (i + 1)).innerHTML = array[i];
+                        }
+
+
+                        document.getElementById("loading").hidden = true;
+                        document.getElementById("nonvoting").hidden = true;
+                        document.getElementById("votebox").hidden = false;
+                        break;
+                    case "endvote":
+                        document.getElementById("loading").hidden = false;
+                        document.getElementById("nonvoting").hidden = true;
+                        document.getElementById("votebox").hidden = true;
+
+                        votes = [false, false, false, false, false];
+
+                        break;
+                    case "nonvote":
+                        document.getElementById("loading").hidden = true;
+                        document.getElementById("nonvoting").hidden = false;
+                        document.getElementById("votebox").hidden = true;
+                        break;
+                }
+            });
+            socket.on('close', () => { });
+        });
+
+        for (var i = 0; i < document.getElementsByTagName("input").length; i++) {
+            var checkbox = document.getElementsByTagName("input")[i];
+
+            checkbox.addEventListener("change", (e) => {
+                votes[parseInt(e.target.id.replace("vote", "")) - 1] = e.target.checked;
+
+                socket.send("update:" + JSON.stringify(votes));
+            })
+        }
+
+        setTimeout(() => {
+            socket.send("start");
+        }, 5000)
+        setTimeout(() => {
+            socket.send("end");
+        }, 10000)
+        setTimeout(() => {
+            socket.send("non");
+        }, 15000)
+    </script>
+</body>
+
+</html>
