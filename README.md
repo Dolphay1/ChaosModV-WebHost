@@ -38,12 +38,12 @@ Example:
 
 http://request.com/api/?request=EXAMPLE
 
-request.com would be the host
+**request.com** - The host
 
-/api/ would be the directory
+**/api/** - The directory
 
-request would be the parameter
+**request** - The parameter
 
 the ? and = are added automatically
 
-EXAMPLE is the request made by the mod, this will usually be "result" as that is currently the only implemented request. 
+**EXAMPLE** is the request made by the mod, this will usually be "result" as that is currently the only implemented request. 
