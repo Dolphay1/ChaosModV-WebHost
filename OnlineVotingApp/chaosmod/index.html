@@ -247,7 +247,6 @@
         socket.on('open', () => {
             socket.on('message', data => {
                 data = data.split(":")
-                console.log(data)
                 switch (data[0]) {
                     case "update":
                         var jsonData = JSON.parse(data[1]);
@@ -297,16 +296,6 @@
                 socket.send("update:" + JSON.stringify(votes));
             })
         }
-
-        setTimeout(() => {
-            socket.send("start");
-        }, 5000)
-        setTimeout(() => {
-            socket.send("end");
-        }, 10000)
-        setTimeout(() => {
-            socket.send("non");
-        }, 15000)
     </script>
 </body>
 
