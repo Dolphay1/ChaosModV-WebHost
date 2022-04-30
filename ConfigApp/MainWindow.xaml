@@ -320,7 +320,7 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem x:Name="vote_tab" Header="Manual Voting" Background="#FFF0F0F0" BorderBrush="LightGray">
+                <TabItem x:Name="vote_tab" Header="Online Voting" Background="#FFF0F0F0" BorderBrush="LightGray">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="120" />
