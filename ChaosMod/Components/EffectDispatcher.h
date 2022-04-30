@@ -89,6 +89,8 @@ private:
 	DWORD64 m_ullMetaTimer = 0;
 	int m_iMetaEffectTimer = 0;
 
+	bool m_bOnlineEnabled;
+
 	bool m_bEnableTwitchVoting;
 	ETwitchOverlayMode m_eTwitchOverlayMode;
 

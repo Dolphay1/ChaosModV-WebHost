@@ -8,6 +8,7 @@ static std::unique_ptr<TwitchVoting> ms_pTwitchVoting;
 static std::unique_ptr<Failsafe> ms_pFailsafe;
 static std::unique_ptr<SplashTexts> ms_pSplashTexts;
 static std::unique_ptr<ShortCut> ms_pShortCut;
+static std::unique_ptr<OnlineVoting> ms_pOnlineVoting;
 
 static bool ms_bClearAllEffects = false;
 
@@ -56,6 +57,8 @@ static void Reset()
 	ms_pDebugMenu.reset();
 
 	ms_pTwitchVoting.reset();
+
+	ms_pOnlineVoting.reset();
 
 	ms_pFailsafe.reset();
 
@@ -138,6 +141,9 @@ static void Init()
 
 	LOG("Initializing Twitch voting");
 	ms_pTwitchVoting = std::make_unique<TwitchVoting>(rgTextColor);
+
+	LOG("Initializing Online voting");
+	ms_pOnlineVoting = std::make_unique<OnlineVoting>(rgTextColor);
 
 	LOG("Initializing Failsafe");
 	ms_pFailsafe = std::make_unique<Failsafe>();
