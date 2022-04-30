@@ -16,7 +16,7 @@ It is an altered fork of the original mod that allows you to host your own votin
 ## Multivoting
 Multivoting allows a single person to vote for more options than just one, it is recommended for smaller groups as its more reliably gives an answer everyone is ok with.
 
-## Singlevoting
+## Singlevoting (Not Yet Implemented)
 Single voting only lets each individual vote for one answer, and never lets them vote for a second one, the more traditional, and easier to understand voting system
 
 # Random Effect Votable Option
