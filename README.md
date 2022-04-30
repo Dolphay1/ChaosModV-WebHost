@@ -39,7 +39,9 @@ Example:
 http://request.com/api/?request=EXAMPLE
 
 request.com would be the host
+
 /api/ would be the directory
+
 request would be the parameter
 
 the ? and = are added automatically
