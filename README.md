@@ -1,78 +1,49 @@
-# Chaos Mod V
+## What is Chaos Mod V?
 
 A replica of the chaos mods found on previous GTA games for GTA V.
 
-See the [GTA5-Mods mod page](https://www.gta5-mods.com/scripts/chaos-mod-v-beta) for more information and instructions on how to install it.
-
-Feel free to join the Discord Server for community support or simply to stay up to date on this (and other) mods.
+See the [GTA5-Mods mod page](https://www.gta5-mods.com/scripts/chaos-mod-v-beta) and [GitHub page](https://github.com/gta-chaos-mod/ChaosModV) for more information and instructions on how to install it.
 
 Also make sure to check the [Wiki](https://github.com/gta-chaos-mod/ChaosModV/wiki)!
 
 [![](https://discord.com/api/guilds/785656433529716757/widget.png)](https://discord.gg/w2tDeKVaF9)
 
-## Building
+# What is Chaos Mod V-WebHost
+It is an altered fork of the original mod that allows you to host your own voting platform for people to vote with instead of using twitch, it has a built in version which allows for multivoting and single voting.
 
-1. Clone the repo `git clone https://github.com/gta-chaos-mod/ChaosModV.git`
+# Multivoting vs. Singlevoting
 
-2. `cd ChaosModV`
+## Multivoting
+Multivoting allows a single person to vote for more options than just one, it is recommended for smaller groups as its more reliably gives an answer everyone is ok with.
 
-3. Initialize all submodules
+## Singlevoting (Not Yet Implemented)
+Single voting only lets each individual vote for one answer, and never lets them vote for a second one, the more traditional, and easier to understand voting system
 
-```
-git submodule init
-git submodule update --recursive
-```
+# Random Effect Votable Option
+This replaces the 4th voting option with a Random Effect option allowing users to pick this if they feel the other options aren't adequate.
 
-4. Open `vendor/minhook/build/VC16/MinHookVC16.sln` in Visual Studio
+# Using the mod as a host vs. setting up your own host
 
-5. Compile libMinHook as x64 Release build
+## Using the Mod as a Host
+The mod comes incorporated with a system that allows you to vote for options without any other setup. To do this just disable the "Use a seperate host" option.
 
-6. Open `ChaosMod.sln` in the root folder in Visual Studio
+If you need to access the host from outside the current network you will have to port forward the ports used. The mod will always use 2 ports, the entered port + 1, meaning if you set the port to 3003 (by default) it will use the ports 3003 and 3004.
 
-7. Compiling should work now. If there's an error referencing `MsBuildMajorVersion` when building either the ConfigApp or TwitchChatProxy projects, close and open Visual Studio again.
+## Using a Separate Host
+Using a separate host allows you to setup your own server to vote on and the mod will automatically call and request the parts needed to run.
 
-## Adding new effects
+To set this up you check the "Use a separate host" box. Then you put in your Host and Port. The directory used will be the path to access the file, and the request parameter will be the parameter used to request information.
 
-You can easily add and share your own effects using the integrated Lua scripting engine. See [here](https://github.com/gta-chaos-mod/ChaosModV/wiki/Lua-Scripting) for more information.
+Example:
 
-Otherwise, if you want to integrate your effect directly into the mod:
+http://request.com/api/?request=EXAMPLE
 
-1. Add a new effect enum entry to `ChaosMod/Effects/EffectsInfo.h`
+**request.com** - The host
 
-2. Create a new .cpp file in the appropriate folder under `ChaosMod/Effects/db/` with a fitting name
+**/api/** - The directory
 
-Layout of the file should look like this:
+**request** - The parameter
 
-```cpp
-/*
-	Effect by <Your Name>
-*/
+the ? and = are added automatically
 
-#include <stdafx.h>
-
-static void OnStart()
-{
-	
-}
-
-static void OnStop()
-{
-	
-}
-
-static void OnTick()
-{
-	
-}
-
-// Any of these functions can be omitted and either replaced with a `nullptr` or completely left out (default parameter values) in the `RegisterEffect` declaration
-static RegisterEffect registerEffect(EFFECT_ENUM_ENTRY, OnStart, OnStop, OnTick, EffectInfo
-	{
-		// These are always required, you may have to add more designators depending on your effect
-		.Name = "Generic Effect",
-		.Id = "player_funny_stuff"
-	}
-);
-```
-
-3. Add the same info to `ConfigApp/Effects.cs`
+**EXAMPLE** is the request made by the mod, this will usually be "result" as that is currently the only implemented request. 
