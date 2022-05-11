@@ -239,8 +239,9 @@
 
     <script src="./engine.io.js"></script>
     <script>
-        var votes = [false, false, false, false, false]
         const socket = new eio('ws://<IP>:<PORT>/');
+        var votes = [false, false, false, false, false];
+        var multivote = false;
         socket.on('open', () => {
             socket.on('message', data => {
                 data = data.split(":")
@@ -279,6 +280,9 @@
                         document.getElementById("nonvoting").hidden = false;
                         document.getElementById("votebox").hidden = true;
                         break;
+                    case "multivote":
+                        multivote = true;
+                        break;
                 }
             });
             socket.on('close', () => { });
@@ -291,6 +295,15 @@
                 votes[parseInt(e.target.id.replace("vote", "")) - 1] = e.target.checked;
 
                 socket.send("update:" + JSON.stringify(votes));
+
+                if(!multivote) {
+                    for(var k = 0; k < document.getElementsByTagName("input").length; k++) {
+                        var box = document.getElementsByTagName("input")[k]
+                        if(box.id != e.target.id) {
+                            box.checked = false;
+                        }
+                    }
+                }
             })
         }
     </script>

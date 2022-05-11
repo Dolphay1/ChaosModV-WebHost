@@ -10,6 +10,7 @@ using EngineIOSharp.Server.Client;
 using EngineIOSharp.Common.Packet;
 using System.Net;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace OnlineVotingApp.WebServerHosting
 {
@@ -27,6 +28,7 @@ namespace OnlineVotingApp.WebServerHosting
         private int[] votes = new int[4];
         private Dictionary<string, bool[]> sockets = new Dictionary<string, bool[]>();
         private bool voteRunning = true;
+        private bool multivote = false;
         private IChaosPipeClient pipe;
         private string currentVotingState = "endvote";
         public WebServer(IConfig config, IChaosPipeClient pipe)
@@ -94,6 +96,7 @@ namespace OnlineVotingApp.WebServerHosting
             });
 
             socket.Send(currentVotingState);
+            if (multivote) socket.Send("multivote");
         }
 
         private void calculateVote()
@@ -106,7 +109,11 @@ namespace OnlineVotingApp.WebServerHosting
             {
                 for(int i=0; i<votes.Length; i++)
                 {
-                    votes[i] += value[i] ? 1 : 0;
+                    if (value[i]) 
+                    {
+                        votes[i] += value[i] ? 1 : 0;
+                        if(!multivote) break;
+                    }
                 }
             }
         }
